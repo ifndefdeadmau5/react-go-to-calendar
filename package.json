@@ -1,0 +1,33 @@
+{
+  "version": "1.0.0",
+  "author": "ifndefdeadmau5",
+  "license": "MIT",
+  "name": "@ifndefdeadmau5/react-go-to-calendar",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/ifndefdeadmau5"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsup ./src",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "devDependencies": {
+    "@emotion/react": "11.9.3",
+    "@storybook/addon-actions": "6.5.9",
+    "@storybook/addon-essentials": "6.5.9",
+    "@storybook/addon-interactions": "6.5.9",
+    "@storybook/addon-links": "6.5.9",
+    "@storybook/builder-webpack4": "6.5.9",
+    "@storybook/manager-webpack4": "6.5.9",
+    "@storybook/react": "6.5.9",
+    "@storybook/testing-library": "0.0.13",
+    "@types/luxon": "^2.3.2",
+    "@types/react": "18.0.14",
+    "luxon": "^2.4.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "tsup": "6.1.2"
+  },
+  "dependencies": {}
+}
