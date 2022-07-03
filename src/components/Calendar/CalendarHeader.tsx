@@ -1,12 +1,11 @@
 import { ReactNode } from "react";
 
 export interface CalendarHeaderProps {
-  weekend?: boolean;
   children?: ReactNode;
 }
 
 const CalendarHeader = (props: CalendarHeaderProps) => {
-  const { children, weekend, ...others } = props;
+  const { children, ...others } = props;
 
   return (
     <div className="goto-calendar-header-cell" {...others}>

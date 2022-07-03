@@ -1,14 +1,21 @@
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CalendarDayHeader, { CalendarDayHeaderProps } from "./CalendarDayHeader";
 
 interface StickyCalendarDayHeaderProps extends CalendarDayHeaderProps {
   scrollContainerId?: string;
+  disableAnimation?: boolean;
+  minFontSize?: number;
+  fontSizeScale?: number;
+  marginLeftScale?: number;
 }
 
-const StickyCalendarDayHeader = (
-  { scrollContainerId, ...props }: StickyCalendarDayHeaderProps,
-  ref
-) => {
+const StickyCalendarDayHeader = ({
+  scrollContainerId,
+  minFontSize = 14,
+  fontSizeScale = 6,
+  marginLeftScale = 8,
+  ...props
+}: StickyCalendarDayHeaderProps) => {
   const calendarHeaderRef = useRef<HTMLElement | null>(null);
   const [node, setNode] = useState(null);
 
@@ -20,10 +27,12 @@ const StickyCalendarDayHeader = (
       ([entry]) => {
         if (calendarHeaderRef.current) {
           calendarHeaderRef.current.style.fontSize = `${
-            20 - entry.intersectionRatio * 8
+            minFontSize +
+            fontSizeScale -
+            entry.intersectionRatio * fontSizeScale
           }px`;
           calendarHeaderRef.current.style.marginLeft = `${
-            8 - entry.intersectionRatio * 8
+            marginLeftScale - entry.intersectionRatio * marginLeftScale
           }px`;
           calendarHeaderRef.current.style.setProperty(
             "--day-opacity",
@@ -35,7 +44,7 @@ const StickyCalendarDayHeader = (
         root: scrollContainerId
           ? document.querySelector(`#${scrollContainerId}`)
           : null,
-        rootMargin: "-29px",
+        rootMargin: "-34px", // FIXME: remove constant
         threshold: [
           ...Array(100)
             .fill(0)
@@ -64,4 +73,4 @@ const StickyCalendarDayHeader = (
   );
 };
 
-export default forwardRef(StickyCalendarDayHeader);
+export default StickyCalendarDayHeader;

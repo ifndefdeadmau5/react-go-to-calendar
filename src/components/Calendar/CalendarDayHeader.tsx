@@ -20,29 +20,23 @@ const YearMonth = ({
 export interface CalendarDayHeaderProps
   extends React.HTMLAttributes<HTMLDivElement> {
   date: DateTime;
-  highlight?: boolean;
-  weekend?: boolean;
   showYear?: boolean;
 }
 
 const CalendarDayHeader = (
   {
     date,
-    highlight = false,
-    weekend = false,
     showYear = false,
     className,
+    children,
     ...others
   }: CalendarDayHeaderProps,
   ref
 ) => {
   const day = date.get("day");
   const isStartOfMonth = day === 1;
-  const today = DateTime.now().startOf("day");
-  const isToday = date.startOf("day").equals(today);
   const startOfWeek = date.startOf("week");
-  const startOfMonth = findStartOfMonth({ date: startOfWeek, range: 7 }); // one week = 7days
-  const shouldHighlight = isToday || highlight;
+  const startOfMonth = findStartOfMonth({ date: startOfWeek, range: 7 }); // one week === 7 days
 
   return (
     <div
@@ -53,7 +47,7 @@ const CalendarDayHeader = (
       {showYear && startOfMonth ? (
         <YearMonth datetime={startOfMonth!} />
       ) : (
-        <span />
+        children ?? <span />
       )}
 
       <div
