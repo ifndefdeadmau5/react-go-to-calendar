@@ -21,8 +21,8 @@ export const CalendarHeaders = ({
     <CalendarHeader>Wed</CalendarHeader>
     <CalendarHeader>Thu</CalendarHeader>
     <CalendarHeader>Fri</CalendarHeader>
-    <CalendarHeader weekend>Sat</CalendarHeader>
-    <CalendarHeader weekend>Sun</CalendarHeader>
+    <CalendarHeader>Sat</CalendarHeader>
+    <CalendarHeader>Sun</CalendarHeader>
   </div>
 );
 

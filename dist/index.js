@@ -70,6 +70,30 @@ function _objectSpread(target) {
     }
     return target;
 }
+function ownKeys(object, enumerableOnly) {
+    var keys = Object.keys(object);
+    if (Object.getOwnPropertySymbols) {
+        var symbols = Object.getOwnPropertySymbols(object);
+        if (enumerableOnly) {
+            symbols = symbols.filter(function(sym) {
+                return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+            });
+        }
+        keys.push.apply(keys, symbols);
+    }
+    return keys;
+}
+function _objectSpreadProps(target, source) {
+    source = source != null ? source : {};
+    if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+        ownKeys(Object(source)).forEach(function(key) {
+            Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+    }
+    return target;
+}
 function _objectWithoutProperties(source, excluded) {
     if (source == null) return {};
     var target = _objectWithoutPropertiesLoose(source, excluded);
@@ -248,9 +272,8 @@ var useCalendar = function() {
 var useCalendar_default = useCalendar;
 // src/components/Calendar/CalendarHeader.tsx
 var CalendarHeader = function(props) {
-    var children = props.children, weekend = props.weekend, others = _objectWithoutProperties(props, [
-        "children",
-        "weekend"
+    var children = props.children, others = _objectWithoutProperties(props, [
+        "children"
     ]);
     return /* @__PURE__ */ import_react.default.createElement("div", _objectSpread({
         className: "goto-calendar-header-cell"
@@ -271,7 +294,133 @@ var CalendarContainer = function(_param, ref) {
 };
 var CalendarContainer_default = (0, import_react3.forwardRef)(CalendarContainer);
 // src/components/Calendar/CalendarMonth.tsx
+var import_react7 = require("react");
+// src/components/Calendar/CalendarDay.tsx
+var import_react6 = require("react");
+// src/components/Calendar/CalendarDayHeader.tsx
 var import_react4 = require("react");
+// src/utils/index.ts
+var findStartOfMonth = function(param) {
+    var date = param.date, range = param.range;
+    var wholeWeek = _toConsumableArray(new Array(range)).map(function(_, i1) {
+        return date.plus({
+            days: i1
+        });
+    });
+    return wholeWeek.find(function(v) {
+        return v.get("day") === 1;
+    });
+};
+// src/components/Calendar/CalendarDayHeader.tsx
+var YearMonth = function(_param) /* @__PURE__ */ {
+    var datetime = _param.datetime, _offset = _param.offset, offset = _offset === void 0 ? 0 : _offset, others = _objectWithoutProperties(_param, [
+        "datetime",
+        "offset"
+    ]);
+    return import_react.default.createElement("div", _objectSpread({}, others), /* @__PURE__ */ import_react.default.createElement("span", null, datetime.toFormat("yyyy"), "-"), /* @__PURE__ */ import_react.default.createElement("span", null, datetime.toFormat("MM")));
+};
+var CalendarDayHeader = function(_param, ref) {
+    var date = _param.date, _showYear = _param.showYear, showYear = _showYear === void 0 ? false : _showYear, className = _param.className, children = _param.children, others = _objectWithoutProperties(_param, [
+        "date",
+        "showYear",
+        "className",
+        "children"
+    ]);
+    var day = date.get("day");
+    var isStartOfMonth = day === 1;
+    var startOfWeek = date.startOf("week");
+    var startOfMonth = findStartOfMonth({
+        date: startOfWeek,
+        range: 7
+    });
+    return /* @__PURE__ */ import_react.default.createElement("div", _objectSpread({
+        ref: ref,
+        className: "".concat(className, " goto-calendar-day-header")
+    }, others), showYear && startOfMonth ? /* @__PURE__ */ import_react.default.createElement(YearMonth, {
+        datetime: startOfMonth
+    }) : children !== null && children !== void 0 ? children : /* @__PURE__ */ import_react.default.createElement("span", null), /* @__PURE__ */ import_react.default.createElement("div", {
+        className: "goto-calendar-day-number ".concat(showYear ? "toggle-opacity" : "")
+    }, isStartOfMonth && /* @__PURE__ */ import_react.default.createElement("span", null, date.get("month"), "/"), /* @__PURE__ */ import_react.default.createElement("span", null, day)));
+};
+var CalendarDayHeader_default = (0, import_react4.forwardRef)(CalendarDayHeader);
+// src/components/Calendar/StickyCalendarDayHeader.tsx
+var import_react5 = require("react");
+var StickyCalendarDayHeader = function(_param) {
+    var scrollContainerId = _param.scrollContainerId, _minFontSize = _param.minFontSize, minFontSize = _minFontSize === void 0 ? 14 : _minFontSize, _fontSizeScale = _param.fontSizeScale, fontSizeScale = _fontSizeScale === void 0 ? 6 : _fontSizeScale, _marginLeftScale = _param.marginLeftScale, marginLeftScale = _marginLeftScale === void 0 ? 8 : _marginLeftScale, props = _objectWithoutProperties(_param, [
+        "scrollContainerId",
+        "minFontSize",
+        "fontSizeScale",
+        "marginLeftScale"
+    ]);
+    var calendarHeaderRef = (0, import_react5.useRef)(null);
+    var ref = _slicedToArray((0, import_react5.useState)(null), 2), node = ref[0], setNode = ref[1];
+    var observer = (0, import_react5.useRef)(null);
+    (0, import_react5.useEffect)(function() {
+        if (observer.current) observer.current.disconnect();
+        observer.current = new window.IntersectionObserver(function(param) {
+            var _$_param = _slicedToArray(param, 1), entry = _$_param[0];
+            if (calendarHeaderRef.current) {
+                calendarHeaderRef.current.style.fontSize = "".concat(minFontSize + fontSizeScale - entry.intersectionRatio * fontSizeScale, "px");
+                calendarHeaderRef.current.style.marginLeft = "".concat(marginLeftScale - entry.intersectionRatio * marginLeftScale, "px");
+                calendarHeaderRef.current.style.setProperty("--day-opacity", "".concat(entry.intersectionRatio < 0.8 ? 0 : 1));
+            }
+        }, {
+            root: scrollContainerId ? document.querySelector("#".concat(scrollContainerId)) : null,
+            rootMargin: "-34px",
+            threshold: _toConsumableArray(Array(100).fill(0).map(function(_, i1) {
+                return (i1 + 1 * 1) / 100;
+            }))
+        });
+        var currentObserver = observer.current;
+        if (node) {
+            currentObserver.observe(node);
+            calendarHeaderRef.current = node;
+        }
+        return function() {
+            return currentObserver.disconnect();
+        };
+    }, [
+        node,
+        scrollContainerId
+    ]);
+    return /* @__PURE__ */ import_react.default.createElement(CalendarDayHeader_default, _objectSpread({
+        className: "sticky-goto-calendar-day-header",
+        ref: setNode,
+        showYear: true
+    }, props));
+};
+var StickyCalendarDayHeader_default = StickyCalendarDayHeader;
+// src/components/Calendar/CalendarDay.tsx
+var CalendarDay = function(_param, ref) {
+    var children = _param.children, _stickyCell = _param.stickyCell, stickyCell = _stickyCell === void 0 ? false : _stickyCell, day = _param.day, others = _objectWithoutProperties(_param, [
+        "children",
+        "stickyCell",
+        "day"
+    ]);
+    return stickyCell ? /* @__PURE__ */ import_react.default.createElement(import_react6.Fragment, {
+        key: day.toSeconds()
+    }, /* @__PURE__ */ import_react.default.createElement(StickyCalendarDayHeader_default, {
+        date: day,
+        scrollContainerId: "calendar-scroll-container"
+    }), /* @__PURE__ */ import_react.default.createElement("div", _objectSpreadProps(_objectSpread({
+        ref: ref,
+        className: "goto-calendar-day-cell"
+    }, others), {
+        key: day.toSeconds(),
+        style: {
+            gridRow: "2 / 3"
+        }
+    }), children)) : /* @__PURE__ */ import_react.default.createElement("div", _objectSpreadProps(_objectSpread({
+        ref: ref,
+        className: "goto-calendar-day-cell"
+    }, others), {
+        key: day.toSeconds()
+    }), /* @__PURE__ */ import_react.default.createElement(CalendarDayHeader_default, {
+        date: day
+    }), children);
+};
+var CalendarDay_default = (0, import_react6.forwardRef)(CalendarDay);
+// src/components/Calendar/CalendarMonth.tsx
 var CalendarMonth = function(_param, ref) {
     var children = _param.children, _days = _param.days, days = _days === void 0 ? [] : _days, others = _objectWithoutProperties(_param, [
         "children",
@@ -281,21 +430,28 @@ var CalendarMonth = function(_param, ref) {
         ref: ref,
         key: days[0].toFormat("yyyy-MM-dd"),
         className: "goto-calendar-week-grid"
-    }, others), children({
-        days: days
+    }, others), children ? children({
+        days: days,
+        getDayProps: function(index) {
+            return {
+                stickyCell: index === 0
+            };
+        }
+    }) : days.map(function(day, i1) {
+        return /* @__PURE__ */ import_react.default.createElement(CalendarDay_default, {
+            key: day.toFormat("yyyy-MM-DD"),
+            day: day,
+            stickyCell: i1 === 0
+        });
     }));
 };
-var CalendarMonth_default = (0, import_react4.forwardRef)(CalendarMonth);
+var CalendarMonth_default = (0, import_react7.forwardRef)(CalendarMonth);
 // src/components/Calendar/Calendar.tsx
 var CalendarHeaders = function(param) {
     var className = param.className;
     return /* @__PURE__ */ import_react.default.createElement("div", {
         className: "goto-calendar-week-grid goto-calendar-week-header ".concat(className)
-    }, /* @__PURE__ */ import_react.default.createElement(CalendarHeader_default, null, "Mon"), /* @__PURE__ */ import_react.default.createElement(CalendarHeader_default, null, "Tue"), /* @__PURE__ */ import_react.default.createElement(CalendarHeader_default, null, "Wed"), /* @__PURE__ */ import_react.default.createElement(CalendarHeader_default, null, "Thu"), /* @__PURE__ */ import_react.default.createElement(CalendarHeader_default, null, "Fri"), /* @__PURE__ */ import_react.default.createElement(CalendarHeader_default, {
-        weekend: true
-    }, "Sat"), /* @__PURE__ */ import_react.default.createElement(CalendarHeader_default, {
-        weekend: true
-    }, "Sun"));
+    }, /* @__PURE__ */ import_react.default.createElement(CalendarHeader_default, null, "Mon"), /* @__PURE__ */ import_react.default.createElement(CalendarHeader_default, null, "Tue"), /* @__PURE__ */ import_react.default.createElement(CalendarHeader_default, null, "Wed"), /* @__PURE__ */ import_react.default.createElement(CalendarHeader_default, null, "Thu"), /* @__PURE__ */ import_react.default.createElement(CalendarHeader_default, null, "Fri"), /* @__PURE__ */ import_react.default.createElement(CalendarHeader_default, null, "Sat"), /* @__PURE__ */ import_react.default.createElement(CalendarHeader_default, null, "Sun"));
 };
 var Calendar = function(_param) {
     var children = _param.children, props = _objectWithoutProperties(_param, [
