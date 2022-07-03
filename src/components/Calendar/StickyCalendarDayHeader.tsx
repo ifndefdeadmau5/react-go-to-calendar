@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import CalendarDayHeader, { CalendarDayHeaderProps } from "./CalendarDayHeader";
 
@@ -20,15 +18,13 @@ const StickyCalendarDayHeader = (
     if (observer.current) observer.current.disconnect();
     observer.current = new window.IntersectionObserver(
       ([entry]) => {
-        console.log("intersecting");
         if (calendarHeaderRef.current) {
           calendarHeaderRef.current.style.fontSize = `${
-            24 - entry.intersectionRatio * 8
+            20 - entry.intersectionRatio * 8
           }px`;
-          // calendarHeaderRef.current.style.marginLeft = `${
-          //   8 - entry.intersectionRatio * 8
-          // }px`;
-          // calendarHeaderRef.current.style.paddingTop = `${9 - entry.intersectionRatio * 8}px`;
+          calendarHeaderRef.current.style.marginLeft = `${
+            8 - entry.intersectionRatio * 8
+          }px`;
           calendarHeaderRef.current.style.setProperty(
             "--day-opacity",
             `${entry.intersectionRatio < 0.8 ? 0 : 1}`
@@ -60,16 +56,8 @@ const StickyCalendarDayHeader = (
 
   return (
     <CalendarDayHeader
+      className="sticky-goto-calendar-day-header"
       ref={setNode}
-      css={css`
-        grid-row: 1 / 2;
-        position: sticky;
-        top: 0;
-        z-index: 3;
-        box-shadow: inset -1px 0px 0px #ededf0;
-        align-items: flex-start;
-        height: max-content;
-      `}
       showYear
       {...props}
     />

@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-import { css, Global } from "@emotion/react";
 import { DateTime } from "luxon";
 import { Fragment } from "react";
 import CalendarDay from "../CalendarDay";
@@ -7,27 +5,11 @@ import CalendarDayHeader from "./CalendarDayHeader";
 import useCalendar from "./useCalendar";
 import StickyCalendarDayHeader from "./StickyCalendarDayHeader";
 import CalendarHeader from "./CalendarHeader";
+import "./calendar.css";
 
 const SCROLL_CONTAINER_ID = "calendar-scroll-container";
 
-interface CalendarProps {
-  className?: string;
-}
-
-const gridContainerStyle = css`
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(7, minmax(220px, 1fr));
-`;
-
-const headerStyle = css`
-  ${css(gridContainerStyle)};
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  padding-top: 10px;
-  background: white;
-`;
+interface CalendarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const Calendar = (props: CalendarProps) => {
   const today = DateTime.now().startOf("day");
@@ -39,26 +21,10 @@ const Calendar = (props: CalendarProps) => {
   return (
     <div
       id={SCROLL_CONTAINER_ID}
-      css={css`
-        width: 100%;
-        overflow-y: auto;
-      `}
+      className="goto-calendar-container"
       {...props}
     >
-      <Global
-        styles={css`
-          *,
-          *::before,
-          *::after {
-            box-sizing: border-box;
-          }
-
-          p {
-            margin: 0;
-          }
-        `}
-      />
-      <div css={headerStyle}>
+      <div className="goto-calendar-week-grid goto-calendar-week-header">
         <CalendarHeader>Mon</CalendarHeader>
         <CalendarHeader>Tue</CalendarHeader>
         <CalendarHeader>Wed</CalendarHeader>
@@ -68,7 +34,10 @@ const Calendar = (props: CalendarProps) => {
         <CalendarHeader weekend>Sun</CalendarHeader>
       </div>
       {months.map((days) => (
-        <div key={days[0].toFormat("yyyy-MM-dd")} css={gridContainerStyle}>
+        <div
+          key={days[0].toFormat("yyyy-MM-dd")}
+          className="goto-calendar-week-grid"
+        >
           {days.map((day, i) => {
             const nthDayOfWeek = i % 7;
             const isWeekend = nthDayOfWeek === 5 || nthDayOfWeek === 6;
@@ -84,17 +53,15 @@ const Calendar = (props: CalendarProps) => {
                 <CalendarDay
                   // ref={isToday ? todayCellRef : null}
                   key={day.toSeconds()}
-                  date={day}
-                  css={css`
-                    grid-row: 2 / 3;
-                  `}
+                  style={{
+                    gridRow: "2 / 3",
+                  }}
                 />
               </Fragment>
             ) : (
               <CalendarDay
                 // ref={isToday ? todayCellRef : null}
                 key={day.toSeconds()}
-                date={day}
               >
                 <CalendarDayHeader date={day} weekend={isWeekend} />
               </CalendarDay>

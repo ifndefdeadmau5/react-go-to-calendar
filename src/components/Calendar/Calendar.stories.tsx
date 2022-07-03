@@ -1,4 +1,3 @@
-import { css } from "@emotion/react";
 import { ComponentStoryObj, Meta } from "@storybook/react";
 import Calendar from "./Calendar";
 
@@ -15,10 +14,9 @@ const Standard: Story = {
   render: (args) => (
     <div>
       <Calendar
-        css={css`
-          max-height: 100vh;
-          /* max-height: calc(100vh - 92px); */
-        `}
+        style={{
+          maxHeight: "100vh",
+        }}
         {...args}
       />
     </div>

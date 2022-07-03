@@ -1,17 +1,6 @@
-/** @jsxImportSource @emotion/react */
-import { css, Theme } from "@emotion/react";
 import { DateTime } from "luxon";
 import { forwardRef } from "react";
 import { findStartOfMonth } from "../../utils";
-
-const dayNumberStyle = ({ showYear }: { showYear: boolean }) => css`
-  padding: 1px 0px;
-  border-radius: 14px;
-  ${showYear &&
-  css`
-    opacity: var(--day-opacity);
-  `}
-`;
 
 const YearMonth = ({
   datetime,
@@ -22,18 +11,14 @@ const YearMonth = ({
   offset?: number;
   className?: string;
 }) => (
-  <div
-    css={css`
-      z-index: 2;
-    `}
-    {...others}
-  >
+  <div {...others}>
     <span>{datetime.toFormat("yyyy")}-</span>
     <span>{datetime.toFormat("MM")}</span>
   </div>
 );
 
-export interface CalendarDayHeaderProps {
+export interface CalendarDayHeaderProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   date: DateTime;
   highlight?: boolean;
   weekend?: boolean;
@@ -46,6 +31,7 @@ const CalendarDayHeader = (
     highlight = false,
     weekend = false,
     showYear = false,
+    className,
     ...others
   }: CalendarDayHeaderProps,
   ref
@@ -61,30 +47,19 @@ const CalendarDayHeader = (
   return (
     <div
       ref={ref}
-      css={css`
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 4px 12px 2px 12px;
-      `}
+      className={`${className} goto-calendar-day-header`}
       {...others}
     >
       {showYear && startOfMonth ? (
-        <YearMonth className="CalendarDay-yearMonth" datetime={startOfMonth!} />
+        <YearMonth datetime={startOfMonth!} />
       ) : (
-        <span className="CalendarDay-yearMonth" />
+        <span />
       )}
 
       <div
-        // alignItems="center"
-        css={(theme) =>
-          dayNumberStyle({
-            theme,
-            highlight: shouldHighlight,
-            weekend,
-            showYear,
-          })
-        }
+        className={`goto-calendar-day-number ${
+          showYear ? "toggle-opacity" : ""
+        }`}
       >
         {isStartOfMonth && <span>{date.get("month")}/</span>}
         <span>{day}</span>
