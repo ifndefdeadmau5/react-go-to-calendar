@@ -1,10 +1,14 @@
 {
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "ifndefdeadmau5",
   "license": "MIT",
   "name": "@ifndefdeadmau5/react-go-to-calendar",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/ifndefdeadmau5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ifndefdeadmau5/react-go-to-calendar.git"
   },
   "main": "dist/index.js",
   "scripts": {
