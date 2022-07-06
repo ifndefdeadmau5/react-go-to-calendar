@@ -1,8 +1,9 @@
 {
-  "version": "1.0.5",
+  "version": "1.0.6",
   "author": "ifndefdeadmau5",
   "license": "MIT",
   "name": "@ifndefdeadmau5/react-go-to-calendar",
+  "description": "your go-to calendar library built with React(iCal style)",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/ifndefdeadmau5"
   },
