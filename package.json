@@ -7,10 +7,7 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/ifndefdeadmau5"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ifndefdeadmau5/react-go-to-calendar.git"
-  },
+  "repository": "git://github.com/ifndefdeadmau5/react-go-to-calendar.git",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsup",
