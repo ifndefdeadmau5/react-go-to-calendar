@@ -1,7 +1,7 @@
 # react-go-to-calendar
 Your go-to calendar library built with React(iCal style). comes with full customizability and fancy sticky animation.
 
-## features
+## Features
 
 - Scroll back and forth to navigate across months
 - Dynamic height of each cell, naturally grows as it's content gets bigger
@@ -11,7 +11,7 @@ Your go-to calendar library built with React(iCal style). comes with full custom
 - Fully composable
 
 
-## install
+## Installation
 ```sh
 npm install @ifndefdeadmau5/react-go-to-calendar
 ```
