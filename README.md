@@ -20,7 +20,7 @@ npm install @ifndefdeadmau5/react-go-to-calendar
 
 ## Usage
 
-To have simple calendar rendered *without any hassle*, you'll probably just want to make use of the `<Calendar />` component right away.
+To have a simple calendar rendered *without any hassle*, you'll probably just want to make use of the `<Calendar />` component right away.
 
 ```tsx
 
