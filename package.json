@@ -1,20 +1,27 @@
 {
-  "version": "1.0.6",
-  "author": "ifndefdeadmau5",
+  "version": "1.0.7",
+  "author": {
+    "name": "ifndefdeadmau5"
+  },
   "license": "MIT",
   "name": "@ifndefdeadmau5/react-go-to-calendar",
   "description": "your go-to calendar library built with React(iCal style)",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/ifndefdeadmau5"
   },
-  "repository": "git://github.com/ifndefdeadmau5/react-go-to-calendar.git",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ifndefdeadmau5/react-go-to-calendar.git"
+  },
   "main": "dist/index.js",
   "scripts": {
     "build": "tsup",
     "dev": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "chromatic": "npx chromatic --project-token=1bfac15d6660"
   },
   "devDependencies": {
+    "@emotion/react": "^11.9.3",
     "@storybook/addon-actions": "6.5.9",
     "@storybook/addon-essentials": "6.5.9",
     "@storybook/addon-interactions": "6.5.9",
@@ -26,7 +33,10 @@
     "@swc/core": "^1.2.205",
     "@types/luxon": "^2.3.2",
     "@types/react": "18.0.14",
+    "@types/react-beautiful-dnd": "^13.1.2",
     "autoprefixer": "^9.0.0",
+    "chromatic": "^6.7.0",
+    "nanoid": "^4.0.0",
     "postcss": "^8.4.14",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -41,6 +51,13 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "luxon": "^2.4.0"
-  }
+    "luxon": "^2.4.0",
+    "react-beautiful-dnd": "^13.1.0"
+  },
+  "bugs": {
+    "url": "https://github.com/ifndefdeadmau5/react-go-to-calendar/issues"
+  },
+  "readme": "ERROR: No README data found!",
+  "homepage": "https://github.com/ifndefdeadmau5/react-go-to-calendar#readme",
+  "_id": "@ifndefdeadmau5/react-go-to-calendar@1.0.7"
 }

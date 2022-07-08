@@ -1,11 +1,14 @@
 import { ComponentStoryObj, Meta } from "@storybook/react";
 import { DateTime } from "luxon";
+import { nanoid } from "nanoid";
 import { useEffect, useRef } from "react";
+import { DragDropContext } from "react-beautiful-dnd";
 import { Waypoint } from "react-waypoint";
 import Calendar, { CalendarHeaders } from "./Calendar";
 import CalendarContainer from "./CalendarContainer";
 import CalendarDay from "./CalendarDay";
 import CalendarMonth from "./CalendarMonth";
+import Column from "./Demo/Column";
 import useCalendar from "./useCalendar";
 
 export default {
@@ -50,7 +53,9 @@ const CustomDayCell: Story = {
                 key={day.toFormat("yyyy-MM-DD")}
                 day={day}
                 style={{ ...(highlight && { background: "#a5d6a7" }) }}
-              />
+              >
+                {/* your custom cell content goes here */}
+              </CalendarDay>
             );
           })
         }
@@ -66,7 +71,7 @@ export const CustomDayCellStory: Story = {
 
 const LOOKUP_RANGE = 12;
 
-const WithWayPointDemo = (args) => {
+const InfiniteScrollDemo = (args) => {
   const [{ months }, setCursor] = useCalendar({
     initialCursor: DateTime.now().minus({ weeks: LOOKUP_RANGE }),
     weeks: LOOKUP_RANGE * 2,
@@ -77,6 +82,7 @@ const WithWayPointDemo = (args) => {
   useEffect(() => {
     if (currentMonthRef.current && rootRef.current) {
       const element = currentMonthRef.current;
+      // FIXME: remove constant
       const headerOffset = 34;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition =
@@ -113,7 +119,19 @@ const WithWayPointDemo = (args) => {
             ref={isCurrent ? currentMonthRef : null}
             key={days?.[0]?.toFormat("yyyy-MM-DD")}
             days={days}
-          />
+          >
+            {({ days, getDayProps }) =>
+              days.map((day, i) => {
+                return (
+                  <CalendarDay
+                    key={day.toFormat("yyyy-MM-DD")}
+                    day={day}
+                    {...getDayProps(i)}
+                  />
+                );
+              })
+            }
+          </CalendarMonth>
         );
       })}
       <Waypoint
@@ -127,13 +145,13 @@ const WithWayPointDemo = (args) => {
   );
 };
 
-const WithWayPoint: Story = {
-  render: WithWayPointDemo,
+const InfiniteScroll: Story = {
+  render: InfiniteScrollDemo,
   args: {},
 };
 
-export const WithWayPointStory: Story = {
-  ...WithWayPoint,
+export const InfiniteScrollStory: Story = {
+  ...InfiniteScroll,
 };
 
 const WithLayout: Story = {
@@ -159,4 +177,37 @@ const WithLayout: Story = {
 };
 export const WithLayoutStory: Story = {
   ...WithLayout,
+};
+
+const DnDDemo = () => (
+  <DragDropContext onDragEnd={() => {}}>
+    <Calendar
+      style={{
+        // you need to specify container's height in order to make it scrollable
+        maxHeight: "100vh",
+      }}
+    >
+      {({ days, getDayProps }) =>
+        days.map((day, i) => {
+          return (
+            <CalendarDay
+              {...getDayProps(i)}
+              key={day.toFormat("yyyy-MM-DD")}
+              day={day}
+            >
+              <Column droppableId={nanoid()} />
+            </CalendarDay>
+          );
+        })
+      }
+    </Calendar>
+  </DragDropContext>
+);
+
+const WithDnD: Story = {
+  render: DnDDemo,
+  args: {},
+};
+export const WithDnDStory: Story = {
+  ...WithDnD,
 };
