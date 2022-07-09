@@ -3,7 +3,7 @@ Your go-to calendar library built with React(iCal style). comes with full custom
 
 ## Features
 
-- Scroll back and forth to navigate across months
+- ⬇️ Keep Scroll up and down to navigate across months
 - Dynamic height of each cell, naturally grows as it's content gets bigger
 - iCalendar style animation when transitioning between months
 - Provides custom hook that returns desired range of date so that you can build your own calendar UI from scratch
