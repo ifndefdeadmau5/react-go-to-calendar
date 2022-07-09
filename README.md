@@ -16,7 +16,7 @@ Your go-to calendar library built with React(iCal style). comes with full custom
 npm install @ifndefdeadmau5/react-go-to-calendar
 ```
 ## Storybook
-[Link](https://62c58ee61cca03e84589abdf-xnxatptfux.chromatic.com/?path=/story/components-calendar--default-story)
+[Link](https://62c58ee61cca03e84589abdf-pvwwggzmbg.chromatic.com/)
 
 ## Usage
 
