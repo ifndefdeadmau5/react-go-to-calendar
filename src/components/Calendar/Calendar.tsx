@@ -36,7 +36,7 @@ const Calendar = ({ children, ...props }: CalendarProps) => {
     <CalendarContainer {...props}>
       <CalendarHeaders />
       {months.map((days) => (
-        <CalendarMonth key={days?.[0]?.toFormat("yyyy-MM-DD")} days={days}>
+        <CalendarMonth key={days?.[0]?.toFormat("yyyy-MM-dd")} days={days}>
           {children}
         </CalendarMonth>
       ))}

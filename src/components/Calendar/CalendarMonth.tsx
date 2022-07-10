@@ -38,7 +38,7 @@ const CalendarMonth = (
         : days.map((day, i) => {
             return (
               <CalendarDay
-                key={day.toFormat("yyyy-MM-DD")}
+                key={day.toFormat("yyyy-MM-dd")}
                 day={day}
                 stickyCell={i === 0}
               />

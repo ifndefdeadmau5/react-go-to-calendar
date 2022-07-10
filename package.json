@@ -1,11 +1,13 @@
 {
-  "version": "1.0.12",
+  "version": "1.0.15",
   "author": "ifndefdeadmau5",
   "license": "MIT",
   "name": "@ifndefdeadmau5/react-go-to-calendar",
+  "email": "trevorme91@gmail.com",
   "description": "your go-to calendar library built with React(iCal style)",
   "publishConfig": {
-    "@ifndefdeadmau5:registry": "https://npm.pkg.github.com"
+    "@ifndefdeadmau5:registry": "https://npm.pkg.github.com",
+    "registry": "https://registry.npmjs.org/"
   },
   "repository": "ifndefdeadmau5/react-go-to-calendar",
   "main": "dist/index.js",
@@ -26,6 +28,7 @@
     "@storybook/react": "6.5.9",
     "@storybook/testing-library": "0.0.13",
     "@swc/core": "^1.2.205",
+    "@tanstack/react-virtual": "^3.0.0-beta.2",
     "@types/luxon": "^2.3.2",
     "@types/react": "18.0.14",
     "@types/react-beautiful-dnd": "^13.1.2",
@@ -34,12 +37,12 @@
     "nanoid": "^4.0.0",
     "postcss": "^8.4.14",
     "react": "18.2.0",
+    "react-beautiful-dnd": "^13.1.0",
     "react-dom": "18.2.0",
     "react-waypoint": "^10.3.0",
     "tailwindcss": "^3.1.4",
     "tsup": "6.1.2",
-    "typescript": "^4.7.4",
-    "react-beautiful-dnd": "^13.1.0"
+    "typescript": "^4.7.4"
   },
   "peerDependencies": {
     "luxon": "^2.4.0",
