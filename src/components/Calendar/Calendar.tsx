@@ -1,9 +1,9 @@
-import { DateTime } from "luxon";
-import useCalendar from "./useCalendar";
 import CalendarHeader from "./CalendarHeader";
 import CalendarContainer from "./CalendarContainer";
 import CalendarMonth, { CalendarMonthChildrenFn } from "./CalendarMonth";
 import "./calendar.css";
+import { addWeeks } from "../../utils";
+import useCalendar from "./useCalendar";
 
 interface CalendarProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
@@ -28,7 +28,7 @@ export const CalendarHeaders = ({
 
 const Calendar = ({ children, ...props }: CalendarProps) => {
   const [{ months }, setCursor] = useCalendar({
-    initialCursor: DateTime.now().minus({ weeks: 12 }),
+    initialCursor: addWeeks(new Date(), -12),
     weeks: 24,
   });
 
@@ -36,7 +36,7 @@ const Calendar = ({ children, ...props }: CalendarProps) => {
     <CalendarContainer {...props}>
       <CalendarHeaders />
       {months.map((days) => (
-        <CalendarMonth key={days?.[0]?.toFormat("yyyy-MM-dd")} days={days}>
+        <CalendarMonth key={days?.[0]?.toString()} days={days}>
           {children}
         </CalendarMonth>
       ))}

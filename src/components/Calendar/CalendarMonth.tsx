@@ -1,9 +1,8 @@
-import { DateTime } from "luxon";
 import { forwardRef } from "react";
 import CalendarDay, { CalendarDayProps } from "./CalendarDay";
 
 type Provided = {
-  days: DateTime[];
+  days: Date[];
   getDayProps: (index: number) => Partial<CalendarDayProps>;
 };
 
@@ -12,7 +11,7 @@ export type CalendarMonthChildrenFn = (provided: Provided) => JSX.Element[];
 interface CalendarMonthProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
   children?: CalendarMonthChildrenFn;
-  days?: DateTime[];
+  days?: Date[];
 }
 
 const CalendarMonth = (
@@ -20,12 +19,7 @@ const CalendarMonth = (
   ref
 ) => {
   return (
-    <div
-      ref={ref}
-      key={days[0].toFormat("yyyy-MM-dd")}
-      className="goto-calendar-week-grid"
-      {...others}
-    >
+    <div ref={ref} className="goto-calendar-week-grid" {...others}>
       {children
         ? children({
             days,
@@ -38,7 +32,7 @@ const CalendarMonth = (
         : days.map((day, i) => {
             return (
               <CalendarDay
-                key={day.toFormat("yyyy-MM-dd")}
+                key={day.toString()}
                 day={day}
                 stickyCell={i === 0}
               />

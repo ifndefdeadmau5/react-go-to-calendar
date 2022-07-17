@@ -1,13 +1,13 @@
-import { DateTime } from "luxon";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
+import { addDays, addWeeks, getMonday } from "../../utils";
 
 interface useCalendarOptions {
-  initialCursor?: DateTime;
+  initialCursor?: Date;
   weeks?: number;
 }
 
 // https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_chunk
-const chunk = (input: DateTime[], size: number) => {
+const chunk = (input: Date[], size: number) => {
   return input.reduce((arr, item, idx) => {
     return idx % size === 0
       ? [...arr, [item]]
@@ -17,22 +17,22 @@ const chunk = (input: DateTime[], size: number) => {
 
 const useCalendar: (options?: useCalendarOptions) => [
   {
-    days: DateTime[];
-    months: DateTime[][];
+    days: Date[];
+    months: Date[][];
   },
-  Dispatch<SetStateAction<DateTime>>
+  Dispatch<SetStateAction<Date>>
 ] = (options = {}) => {
   const {
-    weeks: numberOfWeeks = 48,
-    initialCursor: initialDateCursor = DateTime.now().startOf("week"),
+    weeks: numberOfWeeks = 8,
+    initialCursor: initialDateCursor = new Date(),
   } = options;
-  const [cursor, setCursor] = useState(initialDateCursor.startOf("week"));
+  const [cursor, setCursor] = useState(getMonday(initialDateCursor));
 
   const days = useMemo(() => {
-    return [...Array(numberOfWeeks)].reduce<DateTime[]>((acc, _, weekIndex) => {
-      const startOfWeek = cursor.plus({ weeks: weekIndex });
+    return [...Array(numberOfWeeks)].reduce<Date[]>((acc, _, weekIndex) => {
+      const startOfWeek = addWeeks(cursor, weekIndex);
       const wholeWeek = [...Array(7)].map((_, dayIndex) =>
-        startOfWeek.plus({ days: dayIndex })
+        addDays(startOfWeek, dayIndex)
       );
       return [...acc, ...wholeWeek];
     }, []);
@@ -41,12 +41,12 @@ const useCalendar: (options?: useCalendarOptions) => [
   // additional logic, divide by month
   const dividedByMonth = useMemo(
     () =>
-      chunk(days, 7).reduce<DateTime[][]>((acc, week) => {
+      chunk(days, 7).reduce<Date[][]>((acc, week: Date[]) => {
         const startOfWeek = week[0];
+
         const shouldCreateNewMonth =
-          startOfWeek.get("day") === 1 ||
-          startOfWeek.plus({ days: 6 }).get("month") !==
-            startOfWeek.get("month");
+          startOfWeek.getDate() === 1 ||
+          startOfWeek.getMonth() !== addDays(startOfWeek, 6).getMonth();
 
         if (shouldCreateNewMonth) {
           return [...acc, [...week]];
@@ -59,7 +59,13 @@ const useCalendar: (options?: useCalendarOptions) => [
     [days]
   );
 
-  return [{ days, months: dividedByMonth }, setCursor];
+  return [
+    {
+      days,
+      months: dividedByMonth,
+    },
+    setCursor,
+  ];
 };
 
 export default useCalendar;

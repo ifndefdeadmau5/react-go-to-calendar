@@ -4,5 +4,4 @@ export { default as CalendarMonth } from "./CalendarMonth";
 export { default as CalendarDay } from "./CalendarDay";
 export { default as CalendarDayHeader } from "./CalendarDayHeader";
 export { default as StickyCalendarDayHeader } from "./StickyCalendarDayHeader";
-export { default as useCalendar } from "./useCalendar";
 export * from "./Calendar";

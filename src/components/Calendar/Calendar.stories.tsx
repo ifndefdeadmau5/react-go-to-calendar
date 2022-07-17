@@ -1,17 +1,13 @@
 import { ComponentStoryObj, Meta } from "@storybook/react";
 import { DateTime } from "luxon";
 import { nanoid } from "nanoid";
-import { useEffect, useRef } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
-import { Waypoint } from "react-waypoint";
-import Calendar, { CalendarHeaders } from "./Calendar";
-import CalendarContainer from "./CalendarContainer";
+import { addWeeks, formatDate } from "../../utils";
+import Calendar from "./Calendar";
 import CalendarDay from "./CalendarDay";
-import CalendarMonth from "./CalendarMonth";
 import Column from "./Demo/Column";
 import InfiniteScrollVirtual from "./Demo/InfiniteScrollVirtual";
 import InfiniteScrollWayPoint from "./Demo/InfiniteScrollWayPoint";
-import useCalendar from "./useCalendar";
 
 export default {
   component: Calendar,
@@ -48,11 +44,15 @@ const CustomDayCell: Story = {
       >
         {({ days, getDayProps }) =>
           days.map((day, i) => {
-            const highlight = day.startOf("month").equals(day);
+            const luxonDate = DateTime.fromJSDate(day);
+            const highlight =
+              luxonDate.startOf("month").toFormat("yyyy-MM-dd") ===
+              luxonDate.toFormat("yyyy-MM-dd");
+
             return (
               <CalendarDay
                 {...getDayProps(i)}
-                key={day.toFormat("yyyy-MM-dd")}
+                key={DateTime.fromJSDate(day).toFormat("yyyy-MM-dd")}
                 day={day}
                 style={{ ...(highlight && { background: "#a5d6a7" }) }}
               >
@@ -125,11 +125,7 @@ const DnDDemo = () => (
       {({ days, getDayProps }) =>
         days.map((day, i) => {
           return (
-            <CalendarDay
-              {...getDayProps(i)}
-              key={day.toFormat("yyyy-MM-dd")}
-              day={day}
-            >
+            <CalendarDay {...getDayProps(i)} key={formatDate(day)} day={day}>
               <Column droppableId={nanoid()} />
             </CalendarDay>
           );
@@ -146,3 +142,37 @@ const WithDnD: Story = {
 export const WithDnDStory: Story = {
   ...WithDnD,
 };
+
+// const TestVanillaCalendar = () => {
+//   const [{ days, months }, setCursor] = useCalendar({
+//     initialCursor: addWeeks(new Date(), -12),
+//     weeks: 12,
+//   });
+//   console.log("days", days);
+//   // return <span>yes</span>;
+//   return (
+//     <div
+//       style={{
+//         display: "grid",
+//         gap: "16px",
+//       }}
+//     >
+//       {months.map((days) => (
+//         <div className="goto-calendar-week-grid" key={days?.[0]?.toString()}>
+//           {days.map((day) => {
+//             return <p>{day.toDateString()}</p>;
+//           })}
+//         </div>
+//       ))}
+//     </div>
+//   );
+// };
+
+// const VanillaCalendar: Story = {
+//   render: TestVanillaCalendar,
+//   args: {},
+// };
+
+// export const TestVanillaCalendarStory: Story = {
+//   ...VanillaCalendar,
+// };

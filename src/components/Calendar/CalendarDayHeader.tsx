@@ -1,25 +1,28 @@
-import { DateTime } from "luxon";
 import { forwardRef } from "react";
-import { findStartOfMonth } from "../../utils";
+import { findStartOfMonth, formatDate, getMonday } from "../../utils";
 
 const YearMonth = ({
   datetime,
   offset = 0,
   ...others
 }: {
-  datetime: DateTime;
+  datetime: Date;
   offset?: number;
   className?: string;
-}) => (
-  <div {...others}>
-    <span>{datetime.toFormat("yyyy")}-</span>
-    <span>{datetime.toFormat("MM")}</span>
-  </div>
-);
+}) => {
+  const [year, month] = formatDate(datetime).split("-");
+
+  return (
+    <div {...others}>
+      <span>{year}-</span>
+      <span>{month}</span>
+    </div>
+  );
+};
 
 export interface CalendarDayHeaderProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  date: DateTime;
+  date: Date;
   showYear?: boolean;
 }
 
@@ -33,9 +36,9 @@ const CalendarDayHeader = (
   }: CalendarDayHeaderProps,
   ref
 ) => {
-  const day = date.get("day");
+  const day = date.getDate();
   const isStartOfMonth = day === 1;
-  const startOfWeek = date.startOf("week");
+  const startOfWeek = getMonday(date);
   const startOfMonth = findStartOfMonth({ date: startOfWeek, range: 7 }); // one week === 7 days
 
   return (
@@ -55,7 +58,7 @@ const CalendarDayHeader = (
           showYear ? "toggle-opacity" : ""
         }`}
       >
-        {isStartOfMonth && <span>{date.get("month")}/</span>}
+        {isStartOfMonth && <span>{date.getMonth()}/</span>}
         <span>{day}</span>
       </div>
     </div>

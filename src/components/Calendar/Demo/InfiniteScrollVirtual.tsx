@@ -1,6 +1,6 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { DateTime } from "luxon";
 import { useRef } from "react";
+import { addWeeks, formatDate } from "../../../utils";
 import { CalendarHeaders } from "../Calendar";
 import CalendarContainer from "../CalendarContainer";
 import CalendarDay from "../CalendarDay";
@@ -11,7 +11,7 @@ const LOOKUP_RANGE = 48;
 
 const InfiniteScrollVirtual = (args) => {
   const [{ months }, setCursor] = useCalendar({
-    initialCursor: DateTime.now().minus({ weeks: LOOKUP_RANGE }),
+    initialCursor: addWeeks(new Date(), -1 * LOOKUP_RANGE),
     weeks: LOOKUP_RANGE * 2,
   });
   const rootRef = useRef(null);
@@ -40,7 +40,7 @@ const InfiniteScrollVirtual = (args) => {
       >
         {rowVirtualizer.getVirtualItems().map((virtualItem) => {
           const days = months[virtualItem.index];
-          const key = days?.[0]?.toFormat("yyyy-MM-dd");
+          const key = formatDate(days?.[0]);
           return (
             <CalendarMonth
               id={key}
@@ -59,7 +59,7 @@ const InfiniteScrollVirtual = (args) => {
                 days.map((day, i) => {
                   return (
                     <CalendarDay
-                      key={day.toFormat("yyyy-MM-dd")}
+                      key={formatDate(day)}
                       day={day}
                       {...getDayProps(i)}
                     />

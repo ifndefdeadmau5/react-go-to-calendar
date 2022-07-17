@@ -1,4 +1,3 @@
-import { DateTime } from "luxon";
 import { forwardRef, Fragment, ReactNode } from "react";
 import CalendarDayHeader from "./CalendarDayHeader";
 import StickyCalendarDayHeader from "./StickyCalendarDayHeader";
@@ -6,7 +5,7 @@ import StickyCalendarDayHeader from "./StickyCalendarDayHeader";
 export interface CalendarDayProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
   stickyCell?: boolean;
-  day: DateTime;
+  day: Date;
 }
 
 const CalendarDay = (
@@ -14,7 +13,7 @@ const CalendarDay = (
   ref
 ) => {
   return stickyCell ? (
-    <Fragment key={day.toSeconds()}>
+    <Fragment>
       <StickyCalendarDayHeader
         date={day}
         scrollContainerId={"calendar-scroll-container"}
@@ -23,7 +22,7 @@ const CalendarDay = (
         ref={ref}
         className="goto-calendar-day-cell"
         {...others}
-        key={day.toSeconds()}
+        key={day.toString()}
         style={{
           gridRow: "2 / 3",
         }}
@@ -32,12 +31,7 @@ const CalendarDay = (
       </div>
     </Fragment>
   ) : (
-    <div
-      ref={ref}
-      className="goto-calendar-day-cell"
-      {...others}
-      key={day.toSeconds()}
-    >
+    <div ref={ref} className="goto-calendar-day-cell" {...others}>
       <CalendarDayHeader date={day} />
       {children}
     </div>

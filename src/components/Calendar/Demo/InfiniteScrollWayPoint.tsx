@@ -1,6 +1,6 @@
-import { DateTime } from "luxon";
 import { useEffect, useRef } from "react";
 import { Waypoint } from "react-waypoint";
+import { addWeeks, formatDate } from "../../../utils";
 import { CalendarHeaders } from "../Calendar";
 import CalendarContainer from "../CalendarContainer";
 import CalendarDay from "../CalendarDay";
@@ -11,7 +11,7 @@ const LOOKUP_RANGE = 48;
 
 const InfiniteScrollWayPoint = (args) => {
   const [{ months }, setCursor] = useCalendar({
-    initialCursor: DateTime.now().minus({ weeks: LOOKUP_RANGE }),
+    initialCursor: addWeeks(new Date(), -1 * LOOKUP_RANGE),
     weeks: LOOKUP_RANGE * 2,
   });
   const rootRef = useRef(null);
@@ -46,23 +46,22 @@ const InfiniteScrollWayPoint = (args) => {
         topOffset={"-30%"}
         onEnter={({ previousPosition }) => {
           if (previousPosition === "above")
-            setCursor((prev) => prev.minus({ weeks: LOOKUP_RANGE }));
+            setCursor((prev) => addWeeks(prev, -1 * LOOKUP_RANGE));
         }}
       />
       {months.map((days) => {
-        const isCurrent =
-          days?.[7]?.get("month") === DateTime.now().get("month");
+        const isCurrent = days?.[7]?.getMonth() === new Date().getMonth();
         return (
           <CalendarMonth
             ref={isCurrent ? currentMonthRef : null}
-            key={days?.[0]?.toFormat("yyyy-MM-DD")}
+            key={formatDate(days?.[0])}
             days={days}
           >
             {({ days, getDayProps }) =>
               days.map((day, i) => {
                 return (
                   <CalendarDay
-                    key={day.toFormat("yyyy-MM-DD")}
+                    key={formatDate(day)}
                     day={day}
                     {...getDayProps(i)}
                   />
@@ -76,7 +75,7 @@ const InfiniteScrollWayPoint = (args) => {
         bottomOffset={"-30%"}
         onEnter={({ previousPosition }) => {
           if (previousPosition === "below")
-            setCursor((prev) => prev.plus({ weeks: LOOKUP_RANGE }));
+            setCursor((prev) => addWeeks(prev, LOOKUP_RANGE));
         }}
       />
     </CalendarContainer>
